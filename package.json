@@ -13,6 +13,7 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-react": "^7.24.7",
     "@reduxjs/toolkit": "^2.2.7",
+    "axios": "^1.7.7",
     "babel-loader": "^9.2.1",
     "install": "^0.13.0",
     "npm": "^10.8.3",

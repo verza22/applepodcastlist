@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import reducer, {CounterState} from '../reducers/counter';
+import reducer from '../reducers/app';
 
 export type RootState = {
-  value: number;
+  podcastList: Podcast[];
 };
 
 export const store = configureStore({
