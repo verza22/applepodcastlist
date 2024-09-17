@@ -3,10 +3,20 @@ type AppAction = {
   payload: any
 }
 
+type Episode = {
+  id: string
+  title: string
+  description: string
+  releaseDate: string
+  trackTimeMillis: number
+}
+
 type Podcast = {
-  id: number
+  id: string
   title: string
   description: string
   image: string
   author: string
+  episodesNumber: number
+  episodes: Episode[]
 }

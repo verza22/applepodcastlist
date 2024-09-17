@@ -4,6 +4,10 @@ import { GetPodcastList } from '../redux/actions/app';
 import { RootState } from './../redux/stores/store'; 
 
 
+import Card from './../components/card';
+import Filter from './../components/filter';
+import Title from './../components/title';
+
 interface MainProps extends ConnectedProps<typeof connector> {}
 
 class Main extends Component<MainProps> {
@@ -13,22 +17,23 @@ class Main extends Component<MainProps> {
   }
 
   render() {
-    return (
-      <div className="App">
+    return (<div>
+      <Title title="Podcaster" />
+      <Filter search="" />
+      <div className="text-center mt-8">
         {
           this.props.podcadList.map((podcast: Podcast) => {
-            return <div>
-              <div>{podcast.title}</div>
-            </div>
+            return <Card key={podcast.id} podcast={podcast}/>
           })
         }
       </div>
+    </div>
     );
   }
 }
 
 const mapStateToProps = (state: RootState) => ({
-  podcadList: state.podcastList,
+  podcadList: state.podcastList
 });
 
 const mapDispatchToProps = {

@@ -1,0 +1,11 @@
+.divPodcastImg{
+    width: 175px;
+    height: 120px;
+    position: relative;
+}
+.podcastImg{
+    position: absolute;
+    width: 175px;
+    height: 175px;
+    top: -65px;
+}
