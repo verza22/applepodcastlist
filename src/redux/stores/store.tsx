@@ -6,7 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 export type RootState = {
   podcastList: Podcast[]
-  dateRequest: Date
+  dateRequest: string
   search: string
   loading: boolean
 };

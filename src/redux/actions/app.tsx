@@ -66,10 +66,17 @@ export function GetPodcastInfo(podcastID : string, callback : Function) {
                     url: data.results[0].feedUrl
                 })
                 .then(res2 => {
-                    let data = JSON.parse(convert.xml2json(res2.data, {compact: true, spaces: 4}))
-                    let episodes : Episode[] = data.rss.channel.item.map((x:any)=>{
+                    let data = JSON.parse(convert.xml2json(res2.data, {compact: true, spaces: 4}));
+                    let itemList = data.rss.channel.item;
+                    if(typeof data.rss.channel.item.length === "undefined"){
+                        itemList = [data.rss.channel.item];
+                    }
+                    let episodes : Episode[] = itemList.map((x:any)=>{
+                        const id: string = typeof x.guid._cdata === "undefined" ? x.guid?._text : x.guid._cdata;
+                        const lastSlashIndex: number = id.lastIndexOf('/');
+                        const idResult: string = id.substring(lastSlashIndex + 1);
                         return {
-                            id: typeof x.guid._cdata === "undefined" ? x.guid?._text : x.guid._cdata,
+                            id: idResult,
                             title: typeof x.title._cdata === "undefined" ? x.title?._text : x.title._cdata,
                             description: typeof x.description._cdata === "undefined" ? x.description?._text : x.description._cdata,
                             releaseDate: moment(x.pubDate?._text).format("DD/MM/yyyy"),
@@ -102,15 +109,10 @@ export function GetPodcastInfo(podcastID : string, callback : Function) {
     }
   }
 
-
-  export function Search(search: string) {
-    return (dispatch: Dispatch, getState: () => RootState) => {
-        dispatch({
-            type: SEARCH,
-            payload: search
-        });
-    }
-  }
+  export const Search = (text: string) => ({
+    type: SEARCH,
+    payload: text,
+  });
 
   function showError(){
     Swal.fire({

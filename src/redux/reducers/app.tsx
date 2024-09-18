@@ -2,14 +2,14 @@ import { GET_PODCAST_LIST, ADD_EPISODES, SEARCH, SET_LOADING } from '../actions/
 
 export interface AppState {
   podcastList: Podcast[]
-  dateRequest: Date
+  dateRequest: string
   search: string
   loading: boolean
 }
 
 const initialState: AppState = {
   podcastList: [],
-  dateRequest: new Date(),
+  dateRequest: new Date().toISOString(),
   search: "",
   loading: false
 };
@@ -20,7 +20,7 @@ const reducer = (state: AppState = initialState, action: AppAction): AppState =>
       return {
         ...state,
         podcastList: action.payload,
-        dateRequest: new Date()
+        dateRequest: new Date().toISOString()
       };
     case ADD_EPISODES:
       const i:number = state.podcastList.findIndex((podcast: Podcast)=> podcast.id === action.payload.podcastID);
