@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { GetPodcastList } from '../redux/actions/app';
 import { RootState } from './../redux/stores/store'; 
-
+import moment from 'moment';
 
 import Card from './../components/card';
 import Filter from './../components/filter';
@@ -27,9 +27,18 @@ class Main extends Component<MainProps, MainState> {
   }
 
   componentDidMount(): void {
-    this.props.GetPodcastList(()=>{
+    const date1 = moment(this.props.dateRequest);
+    const date2 = moment();
+    
+    const dateDiff = date2.diff(date1, 'seconds');
+    //86,400s === 1 day
+    if(this.props.podcadList.length === 0 || dateDiff > 86400){
+      this.props.GetPodcastList(()=>{
+        this.setPodcastList();
+      });
+    }else{
       this.setPodcastList();
-    });
+    }
   }
 
   componentDidUpdate(prevProps: Readonly<MainProps>, prevState: Readonly<MainState>): void {
@@ -73,6 +82,7 @@ class Main extends Component<MainProps, MainState> {
 
 const mapStateToProps = (state: RootState) => ({
   podcadList: state.podcastList,
+  dateRequest: state.dateRequest,
   search: state.search
 });
 

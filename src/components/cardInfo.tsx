@@ -7,7 +7,7 @@ interface CardInfoProps {
 
 const CardInfo: React.FC<CardInfoProps> = ({ podcast }) => {
     return <Link to={"/podcast/"+podcast.id}>
-      <div className="h-max w-60 px-2 py-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="h-max w-60 px-2 py-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
       <div className="flex justify-center mb-4">
         <img className="rounded-lg" src={podcast.image}/>
       </div>

@@ -1,11 +1,13 @@
 export const GET_PODCAST_LIST = 'GET_PODCAST_LIST';
 export const ADD_EPISODES = 'ADD_EPISODES';
 export const SEARCH = 'SEARCH';
+export const SET_LOADING = 'SET_LOADING';
 
 import { API_URL, API_CORS } from '../../config';
 
 import axios from 'axios';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 var convert = require('xml-js');
 
 import { Dispatch } from 'redux';
@@ -13,6 +15,7 @@ import { RootState } from './../stores/store';
 
 export function GetPodcastList(callback : Function) {
     return (dispatch: Dispatch, getState: () => RootState) => {
+        dispatch({ type: SET_LOADING, payload: true });
         axios({
             method: 'GET',
             url: API_URL+"us/rss/toppodcasts/limit=100/genre=1310/json",
@@ -30,6 +33,7 @@ export function GetPodcastList(callback : Function) {
                     episodes: []
                 }
             });
+            dispatch({ type: SET_LOADING, payload: false });
             dispatch({
                 type: GET_PODCAST_LIST,
                 payload: podcastList
@@ -39,7 +43,8 @@ export function GetPodcastList(callback : Function) {
             })
         })
         .catch(error => {
-            debugger;
+            dispatch({ type: SET_LOADING, payload: false });
+            showError();
         });
     }
   }
@@ -47,6 +52,7 @@ export function GetPodcastList(callback : Function) {
   
 export function GetPodcastInfo(podcastID : string, callback : Function) {
     return (dispatch: Dispatch, getState: () => RootState) => {
+        dispatch({ type: SET_LOADING, payload: true });
         axios({
             method: 'GET',
             url: API_CORS+API_URL+"lookup?id="+podcastID,
@@ -71,6 +77,7 @@ export function GetPodcastInfo(podcastID : string, callback : Function) {
                             urlPodcast: x?.enclosure?._attributes?.url
                         }
                     });
+                    dispatch({ type: SET_LOADING, payload: false });
                     dispatch({
                         type: ADD_EPISODES,
                         payload: {
@@ -81,11 +88,16 @@ export function GetPodcastInfo(podcastID : string, callback : Function) {
                     setTimeout(()=>{
                         callback();
                     })
+                })
+                .catch(error => {
+                    dispatch({ type: SET_LOADING, payload: false });
+                    showError();
                 });
             }
         })
         .catch(error => {
-            debugger;
+            dispatch({ type: SET_LOADING, payload: false });
+            showError();
         });
     }
   }
@@ -98,4 +110,13 @@ export function GetPodcastInfo(podcastID : string, callback : Function) {
             payload: search
         });
     }
+  }
+
+  function showError(){
+    Swal.fire({
+        title: 'Error',
+        text: 'Ha ocurrido un error. Por favor, intente nuevamente.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
   }

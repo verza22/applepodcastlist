@@ -29,10 +29,14 @@ class PodcastComponent extends Component<PodcastProps, PodcastState> {
     const podcastID : string = this.props.params.podcastId;
 
     this.updatePodcastInfo(podcastID);
-    this.props.GetPodcastInfo(podcastID, ()=>{
-      //update with the episode information
-      this.updatePodcastInfo(podcastID);
-    });
+    setTimeout(()=>{
+      if(this.state.podcast === null || this.state.podcast.episodes.length === 0){
+        this.props.GetPodcastInfo(podcastID, ()=>{
+          //update with the episode information
+          this.updatePodcastInfo(podcastID);
+        });
+      }
+    })
   }
 
   updatePodcastInfo(podCastID : string){
