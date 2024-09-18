@@ -58,6 +58,7 @@ class PodcastComponent extends Component<PodcastProps, PodcastState> {
             <Table
               episodesNumber={this.state.podcast.episodesNumber}
               episodes={this.state.podcast.episodes}
+              podcastId={this.state.podcast.id}
             />
           </div>
         }

@@ -3,7 +3,8 @@ import { useParams, Params } from 'react-router-dom';
 
 
 interface RouteParams extends Params {
-  podcastId: string;
+  podcastId: string
+  episodeId: string
 }
 
 export interface WithRouterProps {

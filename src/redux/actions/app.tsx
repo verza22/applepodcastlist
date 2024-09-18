@@ -1,14 +1,17 @@
 export const GET_PODCAST_LIST = 'GET_PODCAST_LIST';
 export const ADD_EPISODES = 'ADD_EPISODES';
+export const SEARCH = 'SEARCH';
+
+import { API_URL, API_CORS } from '../../config';
 
 import axios from 'axios';
-import { API_URL, API_CORS } from '../../config';
+import moment from 'moment';
 var convert = require('xml-js');
 
 import { Dispatch } from 'redux';
 import { RootState } from './../stores/store';
 
-export function GetPodcastList() {
+export function GetPodcastList(callback : Function) {
     return (dispatch: Dispatch, getState: () => RootState) => {
         axios({
             method: 'GET',
@@ -31,6 +34,9 @@ export function GetPodcastList() {
                 type: GET_PODCAST_LIST,
                 payload: podcastList
             });
+            setTimeout(()=>{
+                callback();
+            })
         })
         .catch(error => {
             debugger;
@@ -57,14 +63,14 @@ export function GetPodcastInfo(podcastID : string, callback : Function) {
                     let data = JSON.parse(convert.xml2json(res2.data, {compact: true, spaces: 4}))
                     let episodes : Episode[] = data.rss.channel.item.map((x:any)=>{
                         return {
-                            id: x.guid?._cdata,
-                            title: x.title?._text,
-                            description: x.description?._cdata,
-                            releaseDate: x.pubDate?._text,
-                            trackTimeMillis: x['itunes:duration']?._text
+                            id: typeof x.guid._cdata === "undefined" ? x.guid?._text : x.guid._cdata,
+                            title: typeof x.title._cdata === "undefined" ? x.title?._text : x.title._cdata,
+                            description: typeof x.description._cdata === "undefined" ? x.description?._text : x.description._cdata,
+                            releaseDate: moment(x.pubDate?._text).format("DD/MM/yyyy"),
+                            trackTimeMillis: x['itunes:duration']?._text,
+                            urlPodcast: x?.enclosure?._attributes?.url
                         }
                     });
-
                     dispatch({
                         type: ADD_EPISODES,
                         payload: {
@@ -80,6 +86,16 @@ export function GetPodcastInfo(podcastID : string, callback : Function) {
         })
         .catch(error => {
             debugger;
+        });
+    }
+  }
+
+
+  export function Search(search: string) {
+    return (dispatch: Dispatch, getState: () => RootState) => {
+        dispatch({
+            type: SEARCH,
+            payload: search
         });
     }
   }

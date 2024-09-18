@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/podcast/:podcastId" element={<Podcast />} />
-        <Route path="/episode" element={<Episode />} />
+        <Route path="/podcast/:podcastId/episode/:episodeId" element={<Episode />} />
         <Route path="*" element={<h1>404 - Not Found</h1>} />
       </Routes>
     </Router>

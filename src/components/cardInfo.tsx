@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 interface CardInfoProps {
     podcast: Podcast;
 }
 
 const CardInfo: React.FC<CardInfoProps> = ({ podcast }) => {
-    return <div className="h-max w-60 px-2 py-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    return <Link to={"/podcast/"+podcast.id}>
+      <div className="h-max w-60 px-2 py-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="flex justify-center mb-4">
         <img className="rounded-lg" src={podcast.image}/>
       </div>
@@ -22,6 +24,7 @@ const CardInfo: React.FC<CardInfoProps> = ({ podcast }) => {
         </div>
       </div>
     </div>
+    </Link>
 }
 
 export default CardInfo;

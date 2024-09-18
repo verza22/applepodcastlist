@@ -9,6 +9,7 @@ type Episode = {
   description: string
   releaseDate: string
   trackTimeMillis: number
+  urlPodcast: string
 }
 
 type Podcast = {

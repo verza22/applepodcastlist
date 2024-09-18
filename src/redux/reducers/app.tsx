@@ -1,11 +1,13 @@
-import { GET_PODCAST_LIST, ADD_EPISODES } from '../actions/app';
+import { GET_PODCAST_LIST, ADD_EPISODES, SEARCH } from '../actions/app';
 
 export interface AppState {
-    podcastList: Podcast[];
+  podcastList: Podcast[]
+  search: string
 }
 
 const initialState: AppState = {
-    podcastList: [],
+  podcastList: [],
+  search: ""
 };
 
 const reducer = (state: AppState = initialState, action: AppAction): AppState => {
@@ -27,6 +29,11 @@ const reducer = (state: AppState = initialState, action: AppAction): AppState =>
       return {
         ...state,
         podcastList: data
+      };
+    case SEARCH:
+      return {
+        ...state,
+        search: action.payload
       };
     default:
       return state;
